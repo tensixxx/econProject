@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Your Investment Category</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f9;
+            padding: 40px;
+            margin: 0;
+            display: block;
+            /* ✅ 不再垂直居中 */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .category-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: center;
+            align-items: stretch;
+            /* overflow 默认就是 visible，无需额外设置 */
+        }
+
+        .card {
+            perspective: 1000px;
+            position: relative;
+            /* 新增：用于 z-index 生效 */
+            z-index: 0;
+            /* 新增：初始层级 */
+        }
+
+        .card.flipped {
+            z-index: 10;
+            /* 新增：翻转时提到最上层 */
+        }
+
+        .category {
+            min-width: 380px;
+            min-height: 280px;
+            width: auto;
+            height: auto;
+            padding: 24px;
+            background-color: #fff;
+            border: 2px solid #dedede;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            max-width: 420px;
+            max-height: 100%;
+            overflow-y: auto;
+            transform: rotateY(0deg);
+            backface-visibility: hidden;
+        }
+
+        .card-front {
+            background-color: #ffffff;
+        }
+
+        .card-back {
+            background-color: #d1e8ff;
+            transform: rotateY(180deg);
+        }
+
+        .card-front:hover {
+            background-color: #f0faff;
+            transform: scale(1.03);
+        }
+
+        button {
+            background-color: blue;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>📊 Rachel's Investment Portfolio</h1>
+    <p>Rachel focuses on technology-based investments. Click a card to reveal her chosen companies!</p>
+    <p>Strategy: 50% Low Risk + 30% Medium Risk + 20% High Risk</p>
+    <p>Rachel spends her major part on low risk investments because she doesn't want to lose too much of her money. And
+        when her medium and high risk inverstment earned her principal, she will put all of her profit into high risk
+        inverstment and put all of her principal into low risk investment. At this point, Rachel minimize the
+        possibility of losing her principal. Even all of her profits are lost in high risk inverstment, she still has
+        her principal in low risk inverstment. Overall, Rachel increases the chance of earning more money and minimizes
+        the
+        possibility of losing her principal.
+    </p>
+
+    <div class="category-grid">
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner category">
+                <div class="card-face card-front">
+                    📈 Stocks
+                    <p>High Risk</p>
+                </div>
+                <div class="card-face card-back">
+                    Chosen: <strong>Nvidia</strong>
+                    <a href="stock.html">
+                        <button>Click to Mock Stock Market</button> </a>
+                    <p>Nvidia is a famous technology company producing chips. As AI is developing quicker and quicker,
+                        chips are becoming more and more important to any company that wants to work with AI. As a
+                        result, Rachel believes Navidia company will earn positive profit. She has a positive view of
+                        Navidia company in the future. </p>
+                    <p>Beside Rachel's subjective opinions of Navidia company's stock, the previous stock market data
+                        also support Rachel's inverstment choice. According to Google Finance, ignoring the small amount
+                        of increase or decrease, the overall trend of Nvidia's stock price is increasing in the past one
+                        month, six months, 1 year, and 5 years. </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner category">
+                <div class="card-face card-front">
+                    💵 Bonds
+                    <p>Low Risk</p>
+                </div>
+                <div class="card-face card-back">
+                    Chosen: <strong>Google's 40-year Corporate Bond</strong>
+                    <a href="https://www.fingerlakes1.com/2025/04/28/google-alphabet-corporate-bond-sale-2025"
+                        target="_blank" rel="noopener noreferrer">
+                        <button>Source</button>
+                    </a>
+                    <p>Rachel choses to invest in Google's 40-year Corporate Bond because it is reliable and has low
+                        risk. Google has really high credit, which means the risk is really
+                        low. This bond will be safe and stable, while offering Rachel a fixed interest payments. Rachel
+                        wants to invest more technology-based companies, which Google is one of the most famouse big
+                        tech
+                        companies.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner category">
+                <div class="card-face card-front">
+                    🏠 Collectibles
+                    <p>High Risk</p>
+                </div>
+                <div class="card-face card-back">
+                    Chosen: <strong>Disney "Duffy and Friends"</strong>
+                    <p>Disney Duffy and Friends series is famous of the cute character designs. One of the characters is
+                        LinaBell, a cute and clever pink fox has a lot of fans around the world. Rachel chooses to
+                        invest in
+                        Duffy and Friends dolls, especially LinaBell, because she likes these characters and their value
+                        can
+                        increase 10 times or more in just a few months. This means Rachel can enjoy collecting these
+                        dolls in
+                        her daily
+                        life, and if she sees the price go up a lot, she can sell them earn money. However, this
+                        investment
+                        also comes with
+                        high risk. Why? Let's talk about why the dolls can be so expensive. Not everyone can buy these
+                        dolls easily at Disneyland. To access the store, visitors often have to enter a lottery system,
+                        and only those selected are allowed to shop. This limited access makes the price really high.
+                        But if
+                        Disney suddenly decides to open the store
+                        to everyone, the prices can drop sharply. Since noboday can predict Disney's actions, so Rachel
+                        always
+                        faces a high risk that she might but a doll at a high price.<br> However, Rachel won't spend too
+                        much money here since there's only a few designs for LinaBell every season. So Rachel won't face
+                        a risk that might cause her lost a lot of money.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" onclick="flipCard(this)">
+            <div class="card-inner category">
+                <div class="card-face card-front">
+                    🏠 Real Estate
+                    <p>Medium Risk</p>
+                </div>
+                <div class="card-face card-back">
+                    Chosen: <strong>Condo in Vancouver</strong>
+                    <p>Rachel choose to invest in a condo in Vancouver. Although housing prices are rencently
+                        decreasing,
+                        this provides Rachel an oppotunity to enter the market at a lower price. Vancouver is considered
+                        one of the
+                        best cities for people to live in the world. And its housing market is likely to grow in the
+                        long run. As a result, investing in house in Vancouver has a medium risk. Unlike stocks, houses
+                        are what people can actully use, such as living in, so the price won't decrease too much. </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function flipCard(card) {
+            card.classList.toggle("flipped");
+        }
+    </script>
+
+</body>
+
+</html>

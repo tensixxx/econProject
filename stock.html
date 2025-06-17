@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nvidia Stock Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4fa;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        canvas {
+            margin-top: 20px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background: black;
+        }
+
+        .home {
+            color: white;
+        }
+
+        .buy {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .sell {
+            background: #f44336;
+            color: white;
+        }
+
+        .keep {
+            background: #2196F3;
+            color: white;
+        }
+
+        .result,
+        .status {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+
+        .status {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="buttons">
+        <a href="index.html">
+            <button class="home">Return Home</button>
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>💹 Mock Nvidia Stock Market</h1>
+        <p>Note: everything is randomly generated based on the risk level from the previous data. </p>
+        <canvas id="stockChart" width="700" height="300"></canvas>
+        <div class="result" id="totalSpending">💰 Total Spending: $0.00</div>
+        <div class="result" id="totalProfit">📈 Total Profit: $0.00</div>
+
+        <div class="buttons">
+            <button class="buy" onclick="play('buy')">Buy</button>
+            <button class="sell" onclick="play('sell')">Sell</button>
+            <button class="keep" onclick="play('keep')">Keep</button>
+        </div>
+
+        <div class="status" id="statusText"></div>
+        <div class="result" id="resultText"></div>
+    </div>
+
+    <script>
+        let labels = [];
+        let prices = [];
+        let currentPrice = 113.82;
+        let buyPrice = null;
+        let totalSpending = 0;
+        let totalProfit = 0;
+
+
+
+        // Generate initial 15 days
+        for (let i = 0; i < 15; i++) {
+            labels.push("May " + (5 + i));
+            let change = (Math.random() < 0.6 ? 1 : -1) * (Math.random() * 5 + 1);
+            currentPrice = Math.max(100, currentPrice + change);
+            prices.push(parseFloat(currentPrice.toFixed(2)));
+        }
+
+        const ctx = document.getElementById('stockChart').getContext('2d');
+        const stockChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Nvidia Stock Price (Simulated)',
+                    data: prices,
+                    borderColor: '#1a73e8',
+                    backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 3
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+
+        function play(choice) {
+            let lastPrice = prices[prices.length - 1];
+            let direction = Math.random() < 0.55 ? 1 : -1; // 55% 上涨概率
+            let magnitude = Math.random() * 3 + 0.5;       // 涨跌幅：0.5 到 3（真实点）
+            let change = direction * magnitude;
+            let newPrice = parseFloat((lastPrice + change).toFixed(2));
+            newPrice = Math.max(100, newPrice);
+            prices.push(newPrice);
+            labels.push("May " + (5 + prices.length - 1));
+            stockChart.data.labels = labels;
+            stockChart.data.datasets[0].data = prices;
+            stockChart.update();
+
+            let resultText = "";
+            let statusText = `📍 Current Price: $${newPrice.toFixed(2)}`;
+
+            if (choice === "buy") {
+                buyPrice = newPrice;
+                totalSpending += newPrice;
+                resultText = `✅ You bought at $${buyPrice.toFixed(2)}. Hold tight!`;
+            } else if (choice === "sell") {
+                if (buyPrice === null) {
+                    resultText = "⚠️ You need to buy first!";
+                } else {
+                    let profit = newPrice - buyPrice;
+                    totalProfit += profit;
+                    resultText = profit > 0
+                        ? `🎉 You sold at $${newPrice}. Profit: $${profit.toFixed(2)}`
+                        : `💸 You sold at $${newPrice}. Loss: $${profit.toFixed(2)}`;
+                    buyPrice = null;
+                }
+            } else if (choice === "keep") {
+                resultText = "⏳ You chose to keep. Watching the market...";
+            }
+
+            if (buyPrice !== null) {
+                statusText += ` | 🛒 Buy Price: $${buyPrice.toFixed(2)}`;
+            }
+
+            document.getElementById("statusText").textContent = statusText;
+            document.getElementById("resultText").textContent = resultText;
+
+            // update new totals
+            document.getElementById("totalSpending").textContent = `💰 Total Spending: $${totalSpending.toFixed(2)}`;
+            document.getElementById("totalProfit").textContent = `📈 Total Profit: $${totalProfit.toFixed(2)}`;
+        }
+
+    </script>
+</body>
+
+</html>
